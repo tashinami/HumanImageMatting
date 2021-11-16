@@ -20,7 +20,7 @@ if __name__ == "__main__":
     args = arg_parse()
     os.makedirs(args.trimap_dir, exist_ok=True)
 
-    ext_list = ["jpg", "png"]
+    ext_list = ["jpg", "png", "jpeg"]
     mask_list = sorted(list(chain.from_iterable([glob.glob(os.path.join(args.mask_dir, "*." + ext)) for ext in ext_list])))
 
     for idx, image_path in enumerate(mask_list):
@@ -38,7 +38,8 @@ if __name__ == "__main__":
       trimap_image = trimap_image.astype(np.uint8)
 
       # 保存
-      image_name = os.path.basename(image_path)
+      image_name = os.path.splitext(os.path.basename(image_path))[0]
+      image_name += ".png"
       output_path = os.path.join(args.trimap_dir, image_name)
       cv2.imwrite(output_path, trimap_image)
 

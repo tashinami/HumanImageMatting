@@ -31,12 +31,13 @@ if __name__ == "__main__":
     model = init_detector(config_file, checkpoint_file, device='cuda:0')
 
     results = []
-    ext_list = ["jpg", "png"]
+    ext_list = ["jpg", "png", "jpeg"]
     image_list = sorted(list(chain.from_iterable([glob.glob(os.path.join(args.input_dir, "*." + ext)) for ext in ext_list])))
     for idx, image_path in enumerate(image_list):
         result = inference_detector(model, image_path)
-        human_mask = show_result_ins(image_path, result, model.CLASSES, score_thr=0.25, out_human_mask=True)
+        human_mask = show_result_ins(image_path, result, model.CLASSES, score_thr=args.score_threshold, out_human_mask=True)
 
-        image_name = os.path.basename(image_path)
+        image_name = os.path.splitext(os.path.basename(image_path))[0]
+        image_name += ".png"
         output_path = os.path.join(args.out_dir, image_name)
         cv2.imwrite(output_path, human_mask)

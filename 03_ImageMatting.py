@@ -128,8 +128,10 @@ if __name__ == "__main__":
   for image, trimap in zip(image_list, trimap_list):
     alpha_mask = inference(image, trimap)
 
-    cv2.imshow("mask", alpha_mask)
-    cv2.waitKey(-1)
+    image_name = os.path.splitext(os.path.basename(image))[0]
+    image_name += ".png"
+    output_path = os.path.join(args.out_dir, image_name)
+    cv2.imwrite(output_path, alpha_mask)
 
 
 
