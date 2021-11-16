@@ -9,7 +9,6 @@ def arg_parse():
     '''
       各種パラメータの読み込み
     '''
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--trimap_dir', default="./trimaps", type=str)
     parser.add_argument('--mask_dir', default="./masks", type=str)
@@ -29,16 +28,14 @@ if __name__ == "__main__":
       mask_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
       height, width = mask_image.shape[:2]
 
-      # 二値化 & 輪郭検出
-      _, mask_image = cv2.threshold(mask_image, 127, 255, 0)
-      labels, contours, hierarchy = cv2.findContours(mask_image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-      # 輪郭を膨張してtrimap生成
-      trimap_image = np.zeros((width, height))
-      trimap_image = cv2.drawContours(trimap_image, contours, -1, color=(255, 255, 255), thickness=2)
-
-      trimap_image = cv2.dilate(trimap_image, (5, 5), iterations=10)
-      trimap_image = trimap_image / 255 * 128
+      # マスク画像の膨張収縮を用いてTrimap生成
+      kernel = np.ones((3, 3), np.uint8)
+      eroded_mask = cv2.erode(mask_image, kernel, iterations=10)
+      dilated_mask = cv2.dilate(mask_image, kernel, iterations=10)
+      trimap_image = np.full((height, width), 128)
+      trimap_image[eroded_mask >= 254] = 255
+      trimap_image[dilated_mask <= 1] = 0
+      trimap_image = trimap_image.astype(np.uint8)
 
       # 保存
       image_name = os.path.basename(image_path)
