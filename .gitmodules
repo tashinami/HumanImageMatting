@@ -1,3 +1,6 @@
 [submodule "SOLO"]
 	path = SOLO
 	url = https://github.com/tashinami/SOLO.git
+[submodule "IndexNetMatting"]
+	path = IndexNetMatting
+	url = https://github.com/tashinami/IndexNetMatting.git
