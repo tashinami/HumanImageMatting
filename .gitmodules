@@ -1,0 +1,3 @@
+[submodule "SOLO"]
+	path = SOLO
+	url = https://github.com/tashinami/SOLO.git
