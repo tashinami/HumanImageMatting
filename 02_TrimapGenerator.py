@@ -10,8 +10,8 @@ def arg_parse():
       各種パラメータの読み込み
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--trimap_dir', default="./trimaps", type=str)
-    parser.add_argument('--mask_dir', default="./masks", type=str)
+    parser.add_argument('--trimap_dir', default="./data/trimaps", type=str)
+    parser.add_argument('--mask_dir', default="./data/masks", type=str)
     args = parser.parse_args()
 
     return args
